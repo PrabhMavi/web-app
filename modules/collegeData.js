@@ -106,6 +106,32 @@ var getStudentByNum = function (num) {
     });
 };
 
+var getCourseById= function(id){
+    console.log(id+'here1')
+    return new Promise(function(resolve, reject){
+        var getcourse=null;
+        console.log(id+'here2')
+        initialize().then(datacollect=>{
+            console.log(id+ ' here 3')
+            for (let i=0; i < datacollect.courses.length; i++){
+                
+                if (datacollect.courses[i].courseId==id){
+                    console.log(id)
+                    getcourse= datacollect.courses[i];
+                }
+                
+            }
+
+            if (!getcourse){
+                reject("query returned 0 results "); return;
+
+            }
+            resolve(getcourse);
+
+        })
+    })
+}
+
 var getStudentsByCourse = function (course) {
     return new Promise(function (resolve, reject) {
         var filteredStudents = [];
@@ -132,8 +158,9 @@ var addStudent=function(studentData){
     return new Promise ((resolve,reject)=>{
         let stunum=null;
         let str={}
-
-        str=JSON.parse(studentData)
+        console.log("adding student")
+        console.log(studentData)
+        str=studentData
         console.log(str)
         if (studentData.TA !=true){
             studentData.TA=false
@@ -163,11 +190,47 @@ var addStudent=function(studentData){
         resolve("created data")    
 
     })
+};
 
+var updateStudent=function(studentData){
+    return new Promise ((resolve,reject)=>{
+    
+        var cnt =0
+        initialize().then(data=>{
+            for (let i=0; i<data.students.length ; i++){
+                if (data.students[i].studentNum==studentData.studentNum){
+                    cnt=cnt+1
+                    data.students[i].firstName=studentData.firstName
+                    data.students[i].lastName=studentData.lastName
+                    data.students[i].email=studentData.email
+                    data.students[i].addressStreet=studentData.addressStreet
+                    data.students[i].addressCity=studentData.addressStreet
+                    data.students[i].addressStreet=studentData.addressStreet
+                    data.students[i].addressProvince=studentData.addressProvince
+                    data.students[i].TA=studentData.TA
+                    data.students[i].status=studentData.status
+                    data.students[i].course=studentData.course
+                    console.log(data.students[i])
+                    try {
+                        fs.writeFileSync('./data/students.json', JSON.stringify(dataCollection.students));
+                        console.log("JSON data is saved.");
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+            }
+            if (cnt>0){
+                resolve(console.log("done with the update"))
+            }
+            else{
+                reject("no student found with the student num")
+            }
+            
+        })
+
+    })
 }
 
-
-
-    module.exports={initialize,getAllStudents,getTAs,getCourses,getStudentByNum,getStudentsByCourse,addStudent}
+module.exports={initialize,getAllStudents,getTAs,getCourses,getStudentByNum,getStudentsByCourse,addStudent,getCourseById,updateStudent}
 
  
