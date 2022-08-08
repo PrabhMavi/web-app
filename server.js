@@ -5,7 +5,7 @@
 *  (including 3rd party web sites) or distributed to other students.
 * 
 *  Name: Prabhjot Kaur Student ID: 148991219 Date: 23/07/2022
-*  Heroku link: 
+*  Heroku link: https://glacial-journey-73393.herokuapp.com/
 *  Github link: https://github.com/PrabhMavi/web-app.git
 ********************************************************************************/ 
 
